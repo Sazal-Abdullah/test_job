@@ -32,7 +32,7 @@
                     </li>
                     <!-- Login Link -->
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="{{ route('login')}}">
                             <i class="fa fa-sign-in-alt"></i> Login
                         </a>
                     </li>
