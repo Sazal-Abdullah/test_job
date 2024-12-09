@@ -27,19 +27,12 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            // API routes
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            // Web routes
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
-
-            // POS routes
-            Route::middleware(['web', 'auth']) // Add middleware for POS routes
-                ->prefix('pos') // Add prefix for POS routes
-                ->group(base_path('routes/pos.php'));
         });
     }
 
@@ -52,4 +45,5 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
+
 }

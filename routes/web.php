@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\POSController;
 
 
 
@@ -40,26 +41,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('products', ProductController::class);
 
+    // Route::prefix('pos')->group(function () {
+    //     Route::get('/', [POSController::class, 'index'])->name('pos.index'); // POS page
+    //     Route::post('/cart', [POSController::class, 'addToCart'])->name('pos.cart.add'); // Add to cart
+    //     Route::post('/order', [POSController::class, 'placeOrder'])->name('pos.order.place'); // Place order
+    //     Route::get('/orders', [POSController::class, 'orderList'])->name('pos.orders.list'); // Order list
+    // });
+
+
 });
 
 
 
-
-
-// Route::middleware(['auth'])->group(function () {
-//     // Dashboard Route
-//     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-// });
-
-
-
-// Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-// Route::post('/login', [LoginController::class, 'login']);
-
-
-
-// Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-// Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 

@@ -1,413 +1,320 @@
+
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="{{asset('admin/css/style.css')}}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://www.amcharts.com/lib/4/core.js"></script>
- <script src="https://www.amcharts.com/lib/4/maps.js"></script>
- <script src="https://www.amcharts.com/lib/4/geodata/usaLow.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
-<script src=
-"https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity=
-"sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-            crossorigin="anonymous">
-        </script>
-</head>
-<body class="back-black overflow-hidden">
-    <div class="flx-box container">
-        <div class="row h-100 position-relative">
-            @include('admin.partials.sideber')
-            <div class="col  h-100 p-0">
-                @include('admin.partials.header')
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="Content-Language" content="en">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <title>Sazal Abdullah</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+        <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+        <meta name="msapplication-tap-highlight" content="no">
+        {{-- <link href="https://demo.dashboardpack.com/architectui-html-free/main.css" rel="stylesheet"> --}}
 
 
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="{{asset('admin/css/style.css')}}">
 
-                @yield('content')
+    </head>
+
+    <body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+
+        @include('admin.partials.header')
+        <div class="ui-theme-settings">
+            <button type="button" id="TooltipDemo" class="btn-open-options btn btn-warning">
+                <i class="fa fa-cog fa-w-16 fa-spin fa-2x"></i>
+            </button>
+            <div class="theme-settings__inner">
+                <div class="scrollbar-container">
+                    <div class="theme-settings__options-wrapper">
+                        <h3 class="themeoptions-heading">Layout Options
+                        </h3>
+                        <div class="p-3">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left mr-3">
+                                                <div class="switch has-switch switch-container-class" data-class="fixed-header">
+                                                    <div class="switch-animate switch-on">
+                                                        <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">Fixed Header
+                                                </div>
+                                                <div class="widget-subheading">Makes the header top fixed, always visible!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left mr-3">
+                                                <div class="switch has-switch switch-container-class" data-class="fixed-sidebar">
+                                                    <div class="switch-animate switch-on">
+                                                        <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">Fixed Sidebar
+                                                </div>
+                                                <div class="widget-subheading">Makes the sidebar left fixed, always visible!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left mr-3">
+                                                <div class="switch has-switch switch-container-class" data-class="fixed-footer">
+                                                    <div class="switch-animate switch-off">
+                                                        <input type="checkbox" data-toggle="toggle" data-onstyle="success">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">Fixed Footer
+                                                </div>
+                                                <div class="widget-subheading">Makes the app footer bottom fixed, always visible!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <h3 class="themeoptions-heading">
+                            <div>
+                                Header Options
+                            </div>
+                            <button type="button" class="btn-pill btn-shadow btn-wide ml-auto btn btn-focus btn-sm switch-header-cs-class" data-class="">
+                                Restore Default
+                            </button>
+                        </h3>
+                        <div class="p-3">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <h5 class="pb-2">Choose Color Scheme
+                                    </h5>
+                                    <div class="theme-settings-swatches">
+                                        <div class="swatch-holder bg-primary switch-header-cs-class" data-class="bg-primary header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-secondary switch-header-cs-class" data-class="bg-secondary header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-success switch-header-cs-class" data-class="bg-success header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-info switch-header-cs-class" data-class="bg-info header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-warning switch-header-cs-class" data-class="bg-warning header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-danger switch-header-cs-class" data-class="bg-danger header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-light switch-header-cs-class" data-class="bg-light header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-dark switch-header-cs-class" data-class="bg-dark header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-focus switch-header-cs-class" data-class="bg-focus header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-alternate switch-header-cs-class" data-class="bg-alternate header-text-light">
+                                        </div>
+                                        <div class="divider">
+                                        </div>
+                                        <div class="swatch-holder bg-vicious-stance switch-header-cs-class" data-class="bg-vicious-stance header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-midnight-bloom switch-header-cs-class" data-class="bg-midnight-bloom header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-night-sky switch-header-cs-class" data-class="bg-night-sky header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-slick-carbon switch-header-cs-class" data-class="bg-slick-carbon header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-asteroid switch-header-cs-class" data-class="bg-asteroid header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-royal switch-header-cs-class" data-class="bg-royal header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-warm-flame switch-header-cs-class" data-class="bg-warm-flame header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-night-fade switch-header-cs-class" data-class="bg-night-fade header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-sunny-morning switch-header-cs-class" data-class="bg-sunny-morning header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-tempting-azure switch-header-cs-class" data-class="bg-tempting-azure header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-amy-crisp switch-header-cs-class" data-class="bg-amy-crisp header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-heavy-rain switch-header-cs-class" data-class="bg-heavy-rain header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-mean-fruit switch-header-cs-class" data-class="bg-mean-fruit header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-malibu-beach switch-header-cs-class" data-class="bg-malibu-beach header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-deep-blue switch-header-cs-class" data-class="bg-deep-blue header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-ripe-malin switch-header-cs-class" data-class="bg-ripe-malin header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-arielle-smile switch-header-cs-class" data-class="bg-arielle-smile header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-plum-plate switch-header-cs-class" data-class="bg-plum-plate header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-happy-fisher switch-header-cs-class" data-class="bg-happy-fisher header-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-happy-itmeo switch-header-cs-class" data-class="bg-happy-itmeo header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-mixed-hopes switch-header-cs-class" data-class="bg-mixed-hopes header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-strong-bliss switch-header-cs-class" data-class="bg-strong-bliss header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-grow-early switch-header-cs-class" data-class="bg-grow-early header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-love-kiss switch-header-cs-class" data-class="bg-love-kiss header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-premium-dark switch-header-cs-class" data-class="bg-premium-dark header-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-happy-green switch-header-cs-class" data-class="bg-happy-green header-text-light">
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <h3 class="themeoptions-heading">
+                            <div>Sidebar Options</div>
+                            <button type="button" class="btn-pill btn-shadow btn-wide ml-auto btn btn-focus btn-sm switch-sidebar-cs-class" data-class="">
+                                Restore Default
+                            </button>
+                        </h3>
+                        <div class="p-3">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <h5 class="pb-2">Choose Color Scheme
+                                    </h5>
+                                    <div class="theme-settings-swatches">
+                                        <div class="swatch-holder bg-primary switch-sidebar-cs-class" data-class="bg-primary sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-secondary switch-sidebar-cs-class" data-class="bg-secondary sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-success switch-sidebar-cs-class" data-class="bg-success sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-info switch-sidebar-cs-class" data-class="bg-info sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-warning switch-sidebar-cs-class" data-class="bg-warning sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-danger switch-sidebar-cs-class" data-class="bg-danger sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-light switch-sidebar-cs-class" data-class="bg-light sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-dark switch-sidebar-cs-class" data-class="bg-dark sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-focus switch-sidebar-cs-class" data-class="bg-focus sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-alternate switch-sidebar-cs-class" data-class="bg-alternate sidebar-text-light">
+                                        </div>
+                                        <div class="divider">
+                                        </div>
+                                        <div class="swatch-holder bg-vicious-stance switch-sidebar-cs-class" data-class="bg-vicious-stance sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-midnight-bloom switch-sidebar-cs-class" data-class="bg-midnight-bloom sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-night-sky switch-sidebar-cs-class" data-class="bg-night-sky sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-slick-carbon switch-sidebar-cs-class" data-class="bg-slick-carbon sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-asteroid switch-sidebar-cs-class" data-class="bg-asteroid sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-royal switch-sidebar-cs-class" data-class="bg-royal sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-warm-flame switch-sidebar-cs-class" data-class="bg-warm-flame sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-night-fade switch-sidebar-cs-class" data-class="bg-night-fade sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-sunny-morning switch-sidebar-cs-class" data-class="bg-sunny-morning sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-tempting-azure switch-sidebar-cs-class" data-class="bg-tempting-azure sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-amy-crisp switch-sidebar-cs-class" data-class="bg-amy-crisp sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-heavy-rain switch-sidebar-cs-class" data-class="bg-heavy-rain sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-mean-fruit switch-sidebar-cs-class" data-class="bg-mean-fruit sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-malibu-beach switch-sidebar-cs-class" data-class="bg-malibu-beach sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-deep-blue switch-sidebar-cs-class" data-class="bg-deep-blue sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-ripe-malin switch-sidebar-cs-class" data-class="bg-ripe-malin sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-arielle-smile switch-sidebar-cs-class" data-class="bg-arielle-smile sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-plum-plate switch-sidebar-cs-class" data-class="bg-plum-plate sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-happy-fisher switch-sidebar-cs-class" data-class="bg-happy-fisher sidebar-text-dark">
+                                        </div>
+                                        <div class="swatch-holder bg-happy-itmeo switch-sidebar-cs-class" data-class="bg-happy-itmeo sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-mixed-hopes switch-sidebar-cs-class" data-class="bg-mixed-hopes sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-strong-bliss switch-sidebar-cs-class" data-class="bg-strong-bliss sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-grow-early switch-sidebar-cs-class" data-class="bg-grow-early sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-love-kiss switch-sidebar-cs-class" data-class="bg-love-kiss sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-premium-dark switch-sidebar-cs-class" data-class="bg-premium-dark sidebar-text-light">
+                                        </div>
+                                        <div class="swatch-holder bg-happy-green switch-sidebar-cs-class" data-class="bg-happy-green sidebar-text-light">
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <h3 class="themeoptions-heading">
+                            <div>Main Content Options</div>
+                            <button type="button" class="btn-pill btn-shadow btn-wide ml-auto active btn btn-focus btn-sm">Restore Default
+                            </button>
+                        </h3>
+                        <div class="p-3">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <h5 class="pb-2">Page Section Tabs
+                                    </h5>
+                                    <div class="theme-settings-swatches">
+                                        <div role="group" class="mt-2 btn-group">
+                                            <button type="button" class="btn-wide btn-shadow btn-primary btn btn-secondary switch-theme-class" data-class="body-tabs-line">
+                                                Line
+                                            </button>
+                                            <button type="button" class="btn-wide btn-shadow btn-primary active btn btn-secondary switch-theme-class" data-class="body-tabs-shadow">
+                                                Shadow
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+        <div class="app-main">
+
+            @include('admin.partials.sideber')
 
 
+            @yield('content')
+
+
+            <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
         </div>
     </div>
-
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-   <script src="https://code.highcharts.com/modules/exporting.js"></script>
-   <script src="https://code.highcharts.com/modules/exporting.js"></script>
-
-   <script>
-
-
-
-    $(".cancle-btn").click(function(){
-        $(".side-bar").toggle()
-    })
-    $(".s-bar-close").click(function(){
-        $(".side-bar").toggle()
-    })
-
-// theme
-$(".theme").click(function(){
-  $("body").toggleClass("white-b")
-  $(".white-b").toggleClass("back-black")
-})
-
-
-
-    // counter
-
-    $('.count').each(function () {
-    $(this).prop('Counter',0).animate({
-        Counter: $(this).text()
-    }, {
-        duration: 2000,
-        easing: 'swing',
-        step: function (now) {
-            $(this).text(Math.ceil(now));
-        }
-    });
-});
-
-
-    // charts----->
-
-
-    var options = {
-      chart: {
-        type: "area",
-        height: 300,
-        foreColor: "#999",
-        stacked: true,
-        dropShadow: {
-          enabled: true,
-          enabledSeries: [0],
-          top: -2,
-          left: 2,
-          blur: 5,
-          opacity: 0.06
-        }
-      },
-      colors: ['#00E396', '#0090FF'],
-      stroke: {
-        curve: "smooth",
-        width: 3
-      },
-      dataLabels: {
-        enabled: false
-      },
-      series: [{
-        name: 'Total Views',
-        data: generateDayWiseTimeSeries(0, 18)
-      }, {
-        name: 'Unique Views',
-        data: generateDayWiseTimeSeries(1, 18)
-      }],
-      markers: {
-        size: 0,
-        strokeColor: "#fff",
-        strokeWidth: 3,
-        strokeOpacity: 1,
-        fillOpacity: 1,
-        hover: {
-          size: 6
-        }
-      },
-      xaxis: {
-        type: "datetime",
-        axisBorder: {
-          show: false
-        },
-        axisTicks: {
-          show: false
-        }
-      },
-      yaxis: {
-        labels: {
-          offsetX: 14,
-          offsetY: -5
-        },
-        tooltip: {
-          enabled: true
-        }
-      },
-      grid: {
-        padding: {
-          left: -5,
-          right: 5
-        }
-      },
-      tooltip: {
-        x: {
-          format: "dd MMM yyyy"
-        },
-      },
-      legend: {
-        position: 'top',
-        horizontalAlign: 'left'
-      },
-      fill: {
-        type: "solid",
-        fillOpacity: 0.7
-      }
-    };
-
-    var chart = new ApexCharts(document.querySelector("#timeline-chart"), options);
-
-    chart.render();
-
-    function generateDayWiseTimeSeries(s, count) {
-      var values = [[
-        4,3,10,9,29,19,25,9,12,7,19,5,13,9,17,2,7,5
-      ], [
-        2,3,8,7,22,16,23,7,11,5,12,5,10,4,15,2,6,2
-      ]];
-      var i = 0;
-      var series = [];
-      var x = new Date("11 Nov 2012").getTime();
-      while (i < count) {
-        series.push([x, values[s][i]]);
-        x += 86400000;
-        i++;
-      }
-      return series;
-    }
-
-
-
-
-
-    var options = {
-  chart: {
-    width: "100%",
-    height: 380,
-    type: "bar"
-  },
-  plotOptions: {
-    bar: {
-      horizontal: true
-    }
-  },
-  dataLabels: {
-    enabled: false
-  },
-  stroke: {
-    width: 1,
-    colors: ["#fff"]
-  },
-  series: [
-    {
-      data: [44, 55, 41, 64, 22, 43, 21]
-    }
-  ],
-  xaxis: {
-    categories: [
-      "Korea",
-      "Canada",
-      "Poland",
-      "Italy",
-      "France",
-      "Japan",
-      "China"
-    ]
-  },
-  tooltip: {
-    custom: function({ series, seriesIndex, dataPointIndex, w }) {
-      return (
-        '<div class="arrow_box">' +
-        "<span>" +
-        w.globals.labels[dataPointIndex] +
-        ": " +
-        series[seriesIndex][dataPointIndex] +
-        "</span>" +
-        "</div>"
-      );
-    }
-  }
-};
-
-var chart = new ApexCharts(document.querySelector("#apex-chart"), options);
-
-chart.render();
-
-
-
-
-
-
-
-
-// pie-chart
-const secondView = document.querySelector(".second");
-const minuteView = document.querySelector(".minute");
-const hourView = document.querySelector(".hour");
-const digitalTimeView = document.querySelector(".digital-time");
-
-function setDate() {
-  const now = new Date();
-  const seconds = now.getSeconds();
-  const minutes = now.getMinutes();
-  const hours = now.getHours();
-  const digitalTime = now.toLocaleTimeString("en-US", {
-    hour12: true,
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric"
-  });
-
-  const secondsDegrees = (seconds / 60) * 360;
-  const minutesDegrees = (minutes / 60) * 360;
-  const hoursDegrees = (hours / 12) * 360;
-
-  secondView.style.transform = `rotate(${secondsDegrees}deg)`;
-  minuteView.style.transform = `rotate(${minutesDegrees}deg)`;
-  hourView.style.transform = `rotate(${hoursDegrees}deg)`;
-  digitalTimeView.textContent = digitalTime;
-}
-
-setInterval(setDate, 1000);
-
-// chart-map
-var chart = am4core.create("chartdiv", am4maps.MapChart);
-
-// Set map definition
-chart.geodata = am4geodata_usaLow;
-
-// Set projection
-chart.projection = new am4maps.projections.AlbersUsa();
-
-// Create map polygon series
-var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-polygonSeries.useGeodata = true;
-
-// Configure series
-var polygonTemplate = polygonSeries.mapPolygons.template;
-polygonTemplate.tooltipText = "{name}";
-polygonTemplate.fill = am4core.color("#233d93d1");
-
-
-
-
-  // page-2-charts
-
-
-  var dData = function() {
-  return Math.round(Math.random() * 90) + 10
-};
-
-var barChartData = {
-  labels: ["dD 1", "dD 2", "dD 3", "dD 4", "dD 5", "dD 6", "dD 7", "dD 8", "dD 9", "dD 10"],
-  datasets: [{
-    fillColor: "rgba(0,60,100,1)",
-    strokeColor: "black",
-    data: [dData(), dData(), dData(), dData(), dData(), dData(), dData(), dData(), dData(), dData()]
-  }]
-}
-
-var index = 11;
-var ctx = document.getElementById("canvas").getContext("2d");
-var barChartDemo = new Chart(ctx).Bar(barChartData, {
-  responsive: true,
-  barValueSpacing: 2
-});
-setInterval(function() {
-  barChartDemo.removeData();
-  barChartDemo.addData([dData()], "dD " + index);
-  index++;
-}, 3000);
-
-
-
-
- const msgerForm = get(".msger-inputarea");
-const msgerInput = get(".msger-input");
-const msgerChat = get(".msger-chat");
-
-const BOT_MSGS = [
-  "Hi, how are you?",
-  "Ohh... I can't understand what you trying to say. Sorry!",
-  "I like to play games... But I don't know how to play!",
-  "Sorry if my answers are not relevant. :))",
-  "I feel sleepy! :("
-];
-
-// Icons made by Freepik from www.flaticon.com
-const BOT_IMG = "https://image.flaticon.com/icons/svg/327/327779.svg";
-const PERSON_IMG = "https://image.flaticon.com/icons/svg/145/145867.svg";
-const BOT_NAME = "BOT";
-const PERSON_NAME = "Sajad";
-
-msgerForm.addEventListener("submit", event => {
-  event.preventDefault();
-
-  const msgText = msgerInput.value;
-  if (!msgText) return;
-
-  appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
-  msgerInput.value = "";
-
-  botResponse();
-});
-
-function appendMessage(name, img, side, text) {
-  //   Simple solution for small apps
-  const msgHTML = `
-    <div class="msg ${side}-msg">
-      <div class="msg-img" style="background-image: url(${img})"></div>
-
-      <div class="msg-bubble">
-        <div class="msg-info">
-          <div class="msg-info-name">${name}</div>
-          <div class="msg-info-time">${formatDate(new Date())}</div>
-        </div>
-
-        <div class="msg-text">${text}</div>
-      </div>
-    </div>
-  `;
-
-  msgerChat.insertAdjacentHTML("beforeend", msgHTML);
-  msgerChat.scrollTop += 500;
-}
-
-function botResponse() {
-  const r = random(0, BOT_MSGS.length - 1);
-  const msgText = BOT_MSGS[r];
-  const delay = msgText.split(" ").length * 100;
-
-  setTimeout(() => {
-    appendMessage(BOT_NAME, BOT_IMG, "left", msgText);
-  }, delay);
-}
-
-// Utils
-function get(selector, root = document) {
-  return root.querySelector(selector);
-}
-
-function formatDate(date) {
-  const h = "0" + date.getHours();
-  const m = "0" + date.getMinutes();
-
-  return `${h.slice(-2)}:${m.slice(-2)}`;
-}
-
-function random(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-
-
-
-   </script>
+    <script src="{{asset('admin/js/main.js')}}"></script>
+    {{-- <script type="text/javascript" src="https://demo.dashboardpack.com/architectui-html-free/assets/scripts/main.js"></script> --}}
 </body>
 </html>

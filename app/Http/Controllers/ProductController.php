@@ -102,9 +102,33 @@ class ProductController extends Controller
         // Update variations
         if ($request->has('variations')) {
             foreach ($request->variations as $variation) {
-                ProductVariation::where('id', $variation['id'])->update($variation);
+                // Skip invalid variations
+                if (empty($variation['name']) || empty($variation['value']) || empty($variation['purchase_price']) || empty($variation['selling_price'])) {
+                    continue;
+                }
+
+                if (isset($variation['id'])) {
+                    // Update existing variation
+                    ProductVariation::where('id', $variation['id'])->update([
+                        'variation_name' => $variation['name'],
+                        'variation_value' => $variation['value'],
+                        'purchase_price' => $variation['purchase_price'],
+                        'selling_price' => $variation['selling_price'],
+                    ]);
+                } else {
+                    // Create new variation
+                    ProductVariation::create([
+                        'product_id' => $product->id,
+                        'variation_name' => $variation['name'],
+                        'variation_value' => $variation['value'],
+                        'purchase_price' => $variation['purchase_price'],
+                        'selling_price' => $variation['selling_price'],
+                    ]);
+                }
             }
         }
+
+
 
         return redirect()->route('products.index');
     }
