@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Cart;
 use App\Models\ProductVariation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -12,9 +13,11 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $cartItems = Cart::with('product')->get();
         $products = Product::with('variations')->get();
-        return view('admin.pages.products.index', compact('products'));
+        return view('admin.pages.products.index', compact('products','cartItems'));
     }
+
 
     public function create()
     {

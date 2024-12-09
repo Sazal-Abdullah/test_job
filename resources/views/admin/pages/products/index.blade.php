@@ -15,6 +15,7 @@
                             <tr>
                                 <th>SL</th>
                                 <th>Name</th>
+                                <th>Image</th>
                                 <th>SKU</th>
                                 <th>Selling Price</th>
                                 <th>Actions</th>
@@ -25,6 +26,10 @@
                                 <tr>
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $product->name }}</td>
+                                    <td>
+                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" style="width: 50px;">
+
+                                    </td>
                                     <td>{{ $product->sku }}</td>
                                     <td>{{ $product->selling_price }}</td>
                                     <td>

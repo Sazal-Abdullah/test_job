@@ -20,6 +20,7 @@
                             <div class="product-list">
                                 @foreach($products as $product)
                                     <div class="product-item">
+                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" style="width: 100px;">
                                         <h5>{{ $product->name }}</h5>
                                         <p>SKU: {{ $product->sku }}</p>
                                         <p>Price: {{ $product->selling_price }}</p>
@@ -58,7 +59,26 @@
                                             </tr>
                                         </thead>
                                         <tbody id="cart-table-body">
-                                            <!-- Dynamic Items will be added here -->
+                                            @foreach($cartItems as $item)
+                                                <tr>
+                                                    <td>
+                                                        @if($item->product && $item->product->image)
+                                                            <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->name }}" style="width: 50px; height: auto;">
+                                                        @else
+                                                            <span>No Image</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $item->name }}</td>
+                                                    <td>
+                                                        <input type="number" class="form-control form-control-sm update-qty"
+                                                               data-id="{{ $item->id }}" value="{{ $item->quantity }}" min="1">
+                                                    </td>
+                                                    <td class="text-right">${{ number_format($item->quantity * $item->discounted_price, 2) }}</td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-sm btn-danger remove-item" data-id="{{ $item->id }}">&times;</button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -89,141 +109,70 @@
 </div>
 <script>
 
-document.addEventListener('DOMContentLoaded', function () {
-    const cartTableBody = document.getElementById('cart-table-body');
-    const cartTotal = document.getElementById('cart-total');
-    const checkoutBtn = document.getElementById('checkout-btn');
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function () {
-            const productId = this.dataset.id;
-            const productName = this.dataset.name;
-            const price = parseFloat(this.dataset.price);
-            const discount = parseFloat(this.dataset.discount);
-            const imageUrl = this.dataset.image; // Assuming each product has an image URL in data attribute.
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', function () {
+        const productId = this.dataset.id;
+        const productName = this.dataset.name;
+        const price = parseFloat(this.dataset.price);
+        const discount = parseFloat(this.dataset.discount);
 
-            const discountedPrice = price - (price * discount / 100);
-            const quantity = 1; // Initially adding one quantity
+        const discountedPrice = price - (price * discount / 100);
+        const quantity = 1; // Default quantity
 
-            // Make the fetch request to add to cart
-            fetch('{{ route("pos.cart.add") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                },
-                body: JSON.stringify({
-                    product_id: productId,
-                    name: productName,
-                    price: price,
-                    discounted_price: discountedPrice,
-                    quantity: quantity,
-                    image: imageUrl,
-                }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    renderCart(data.cart); // Render updated cart
-                } else {
-                    alert('Failed to add to cart');
-                }
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+        // Make the fetch request to add to cart
+        fetch('{{ route("pos.cart.add") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                name: productName,
+                price: price,
+                discounted_price: discountedPrice,
+                quantity: quantity,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateCartTable(data.cart); // Dynamically update cart table
+            } else {
+                console.error('Failed to add to cart');
+            }
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
         });
     });
-
-    // Function to render the cart after adding/removing items
-    function renderCart(cartItems) {
-        cartTableBody.innerHTML = '';
-        let total = 0;
-
-        for (const [id, item] of Object.entries(cartItems)) {
-            total += item.quantity * item.discounted_price;
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>
-                    <img src="${item.image}" alt="${item.name}" style="width: 50px; height: auto;">
-                </td>
-                <td>${item.name}</td>
-                <td>
-                    <input type="number" class="form-control form-control-sm update-qty"
-                           data-id="${id}" value="${item.quantity}" min="1">
-                </td>
-                <td class="text-right">$${(item.quantity * item.discounted_price).toFixed(2)}</td>
-                <td class="text-center">
-                    <button class="btn btn-sm btn-danger remove-item" data-id="${id}">&times;</button>
-                </td>
-            `;
-            cartTableBody.appendChild(row);
-        }
-
-        cartTotal.textContent = `$${total.toFixed(2)}`;
-        checkoutBtn.disabled = total === 0;
-
-        attachEventListeners(); // Reattach event listeners
-    }
-
-    // Function to update quantity and remove items in cart
-    function attachEventListeners() {
-        // Update quantity
-        document.querySelectorAll('.update-qty').forEach(input => {
-            input.addEventListener('change', function () {
-                const productId = this.dataset.id;
-                const newQuantity = parseInt(this.value);
-
-                fetch('/pos/cart/update', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    },
-                    body: JSON.stringify({
-                        product_id: productId,
-                        quantity: newQuantity,
-                    }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        renderCart(data.cart); // Update the cart
-                    }
-                });
-            });
-        });
-
-        // Remove item
-        document.querySelectorAll('.remove-item').forEach(button => {
-            button.addEventListener('click', function () {
-                const productId = this.dataset.id;
-
-                fetch('/pos/cart/remove', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    },
-                    body: JSON.stringify({ product_id: productId }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        renderCart(data.cart); // Update the cart after item removal
-                    }
-                });
-            });
-        });
-    }
 });
 
+// Function to dynamically update the cart table
+function updateCartTable(cart) {
+    const cartTableBody = document.getElementById('cart-table-body');
+    cartTableBody.innerHTML = ''; // Clear current cart items
+
+    cart.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <img src="/storage/${item.product.image}" alt="${item.name}" style="width: 50px; height: auto;">
+            </td>
+            <td>${item.name}</td>
+            <td>
+                <input type="number" class="form-control form-control-sm update-qty"
+                       data-id="${item.id}" value="${item.quantity}" min="1">
+            </td>
+            <td class="text-right">$${(item.quantity * item.discounted_price).toFixed(2)}</td>
+            <td class="text-center">
+                <button class="btn btn-sm btn-danger remove-item" data-id="${item.id}">&times;</button>
+            </td>
+        `;
+        cartTableBody.appendChild(row);
+    });
+}
 
 
 

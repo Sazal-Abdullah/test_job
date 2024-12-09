@@ -4,46 +4,77 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\Cart;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 
 class POSController extends Controller
 {
+
     public function index(Request $request)
-    {
-        $products = Product::query();
+{
+    $products = Product::query();
 
-        if ($request->has('search')) {
-            $products->where('name', 'like', '%' . $request->search . '%')
-                     ->orWhere('sku', 'like', '%' . $request->search . '%');
-        }
-
-        $products = $products->paginate(10); // Server-side pagination
-
-        return view('admin.pages.pos.index', compact('products'));
+    if ($request->has('search')) {
+        $products->where('name', 'like', '%' . $request->search . '%')
+                 ->orWhere('sku', 'like', '%' . $request->search . '%');
     }
 
+    $products = $products->paginate(10);
 
+    $cartItems = Cart::where('user_id', auth()->id())->get(); // Authenticated user's cart
 
-    public function addToCart(Request $request)
-{
-    $cart = session()->get('cart', []);
-
-    $cart[$request->product_id] = [
-        'name' => $request->name,
-        'quantity' => $request->quantity,
-        'price' => $request->price,
-        'discounted_price' => $request->discounted_price,
-    ];
-
-    session()->put('cart', $cart);
-
-    return response()->json(['success' => true, 'cart' => $cart]);
+    return view('admin.pages.pos.index', compact('products', 'cartItems'));
 }
 
 
 
 
+
+
+public function addToCart(Request $request)
+{
+    $validated = $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'quantity' => 'required|integer|min:1',
+        'price' => 'required|numeric',
+        'discounted_price' => 'required|numeric',
+    ]);
+
+    $cartItem = Cart::updateOrCreate(
+        ['product_id' => $validated['product_id'], 'user_id' => auth()->id()], // If logged in user
+        [
+            'name' => $request->name,
+            'quantity' => \DB::raw("quantity + {$validated['quantity']}"), // Increment quantity
+            'price' => $validated['price'],
+            'discounted_price' => $validated['discounted_price'],
+        ]
+    );
+
+    return response()->json(['success' => true, 'cartItem' => $cartItem]);
+}
+
+
+
+
+
+
+
+public function updateCart(Request $request)
+{
+    $cartItem = Cart::where('id', $request->cart_id)->where('user_id', auth()->id())->firstOrFail();
+    $cartItem->update(['quantity' => $request->quantity]);
+
+    return response()->json(['success' => true, 'cart' => Cart::where('user_id', auth()->id())->get()]);
+}
+
+
+public function removeFromCart(Request $request)
+{
+    Cart::where('id', $request->cart_id)->where('user_id', auth()->id())->delete();
+
+    return response()->json(['success' => true, 'cart' => Cart::where('user_id', auth()->id())->get()]);
+}
 
 
 
