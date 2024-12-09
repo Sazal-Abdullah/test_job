@@ -25,7 +25,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             @foreach($orders as $order)
                                 <tr>
                                     <td>{{ $order->id }}</td>
