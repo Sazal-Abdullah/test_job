@@ -79,7 +79,7 @@
                                                         <input type="number" class="form-control form-control-sm update-qty"
                                                                data-id="{{ $item->id }}" value="{{ $item->quantity }}" min="1">
                                                     </td>
-                                                    <td class="text-right">${{ number_format($item->total_price, 2) }}</td>
+                                                    <td class="text-right">${{ number_format($item->quantity * $item->discounted_price, 2) }}</td>
                                                     <td class="text-center">
                                                         <button class="btn btn-sm btn-danger remove-item" data-id="{{ $item->id }}">&times;</button>
                                                     </td>
@@ -91,72 +91,22 @@
                                 <div class="cart-footer mt-3">
                                     <h5 class="d-flex justify-content-between">
                                         <span>Total:</span>
-                                        <span id="cart-total" class="text-success">
-                                            ${{ number_format($cartItems->sum('total_price'), 2) }}
-                                        </span>
+                                        <span id="cart-total" class="text-success">$0.00</span>
                                     </h5>
-                                    <button class="btn btn-primary btn-block mt-3" id="checkout-btn" {{ $cartItems->isEmpty() ? 'disabled' : '' }}>
+                                    <button class="btn btn-primary btn-block mt-3" id="checkout-btn" disabled>
                                         Proceed to Checkout
                                     </button>
+                                    {{-- <form id="checkout-form" action="{{ route('pos.placeOrder') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="customer_name" value="Default Customer Name">
+                                        <button type="submit" class="btn btn-primary btn-block mt-3">
+                                            Proceed to Checkout
+                                        </button>
+                                    </form> --}}
+
                                 </div>
                             </div>
                         </div>
-
-                        {{-- <div class="col-lg-4">
-                            <div class="card-header bg-success text-white">
-                                <h3 class="mb-0">Shopping Cart</h3>
-                            </div>
-                            <div id="cart" class="card shadow-sm p-3">
-                                <div class="cart-items" style="max-height: 300px; overflow-y: auto;">
-                                    <table class="table table-bordered table-sm mb-0">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th style="width: 20%;">Image</th>
-                                                <th style="width: 40%;">Name</th>
-                                                <th style="width: 15%;">Qty</th>
-                                                <th style="width: 15%;">Price</th>
-                                                <th style="width: 10%;">Remove</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="cart-table-body">
-                                            @foreach($cartItems as $item)
-                                                <tr>
-                                                    <td>
-                                                        @if($item->product && $item->product->image)
-                                                            <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->name }}" style="width: 50px; height: auto;">
-                                                        @else
-                                                            <span>No Image</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $item->name }}</td>
-                                                    <td>
-                                                        <input type="number" class="form-control form-control-sm update-qty"
-                                                               data-id="{{ $item->id }}" value="{{ $item->quantity }}" min="1">
-                                                    </td>
-                                                    <td class="text-right" id="price-{{ $item->id }}">
-                                                        ${{ number_format($item->total_price, 2) }}
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button class="btn btn-sm btn-danger remove-item" data-id="{{ $item->id }}">&times;</button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="cart-footer mt-3">
-                                    <h5 class="d-flex justify-content-between">
-                                        <span>Total:</span>
-                                        <span id="cart-total" class="text-success">
-                                            ${{ number_format($cartItems->sum('total_price'), 2) }}
-                                        </span>
-                                    </h5>
-                                    <button class="btn btn-primary btn-block mt-3" id="checkout-btn" {{ $cartItems->isEmpty() ? 'disabled' : '' }}>
-                                        Proceed to Checkout
-                                    </button>
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -204,7 +154,6 @@
         });
     });
 
-
     // Function to dynamically update the cart table
     function updateCartTable(cart) {
         const cartTableBody = document.getElementById('cart-table-body');
@@ -240,99 +189,5 @@
         document.getElementById('checkout-btn').disabled = cart.length === 0;
     }
 </script>
-
-
-{{--
-<script>
-    // Update Quantity in Cart
-    document.addEventListener('input', function (e) {
-        if (e.target && e.target.classList.contains('update-qty')) {
-            const productId = e.target.dataset.id;
-            const quantity = parseInt(e.target.value);
-
-            // Prevent invalid quantity
-            if (quantity < 1) {
-                e.target.value = 1;
-                return;
-            }
-
-            // Calculate the new total price
-            const price = parseFloat(e.target.closest('tr').querySelector('td:nth-child(4)').textContent.replace('$', '').trim());
-            const totalPrice = price * quantity;
-
-            // Update the price in the table
-            document.getElementById('price-' + productId).textContent = `$${totalPrice.toFixed(2)}`;
-
-            // Update the total price of the cart
-            updateCartTotal();
-
-            // Update the cart in the database
-            fetch('{{ route("pos.cart.update") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                },
-                body: JSON.stringify({
-                    product_id: productId,
-                    quantity: quantity,
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Cart updated successfully');
-                } else {
-                    console.error('Failed to update cart');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-    });
-
-    // Function to update the total cart price
-    function updateCartTotal() {
-        let total = 0;
-        document.querySelectorAll('td[id^="price-"]').forEach(priceCell => {
-            total += parseFloat(priceCell.textContent.replace('$', '').trim());
-        });
-
-        document.getElementById('cart-total').textContent = `$${total.toFixed(2)}`;
-    }
-
-    // Remove Item from Cart
-    document.addEventListener('click', function (e) {
-        if (e.target && e.target.classList.contains('remove-item')) {
-            const productId = e.target.dataset.id;
-
-            // Remove item from cart
-            fetch('{{ route("pos.cart.remove") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                },
-                body: JSON.stringify({
-                    product_id: productId,
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Remove the row from the table
-                    e.target.closest('tr').remove();
-                    updateCartTotal(); // Update the total price after removal
-                } else {
-                    console.error('Failed to remove item from cart');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-    });
-</script> --}}
 
 @endsection

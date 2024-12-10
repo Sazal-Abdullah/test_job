@@ -79,34 +79,13 @@ public function updateCart(Request $request)
     return response()->json(['success' => true, 'cart' => Cart::where('user_id', auth()->id())->get()]);
 }
 
-// // Update Cart Quantity_ok
-// public function update(Request $request)
-// {
-//     $cartItem = CartItem::find($request->product_id);
-//     if ($cartItem) {
-//         $cartItem->quantity = $request->quantity;
-//         $cartItem->total_price = $cartItem->product->price * $cartItem->quantity;
-//         $cartItem->save();
-//     }
 
-//     return response()->json(['success' => true, 'cart' => CartItem::all()]);
-// }
+public function removeFromCart(Request $request)
+{
+    Cart::where('id', $request->cart_id)->where('user_id', auth()->id())->delete();
 
-// // Remove Item from Cart
-// public function remove(Request $request)
-// {
-//     $cartItem = CartItem::find($request->product_id);
-//     if ($cartItem) {
-//         $cartItem->delete();
-//     }
-
-//     return response()->json(['success' => true, 'cart' => CartItem::all()]);
-// }
-
-
-
-
-
+    return response()->json(['success' => true, 'cart' => Cart::where('user_id', auth()->id())->get()]);
+}
 
 
 
